@@ -24,6 +24,7 @@ En la ruleta, los jugadores colocan fichas en la mesa para apostar en función d
 * **Ruleta Europea**: Consta de 37 casillas numeradas del 0 al 36. La casilla "0" es v erde, mientras que las demás se alternan entre rojo y negro.
 * **Ruleta Americana**: Similar a la europea, pero incluye una casilla adicional, el "00", lo que eleva el total a 38 casillas.
 
+
 1. **Apuestas Internas**
 Estas apuestas se colocan directamente en los números individuales o en combinaciones específicas dentro del área numerada de la mesa. Ofrecen pagos altos, pero tienen menor probabilidad de éxito:
 * Pleno (Straight-Up): Apostar a un solo número. Pago: 35 a 1.
@@ -38,27 +39,78 @@ Estas apuestas cubren grupos más amplios de números, lo que las hace menos arr
 * Alta/Baja: Apostar si el número estará entre 1-18 (bajo) o 19-36 (alto). Pago: 1 a 1.
 * Docena: Apostar a uno de los tres grupos de 12 números (1-12, 13-24, 25-36). Pago: 2 a 1.
 * Columna: Apostar a una de las tres columnas verticales de números. Pago: 2 a 1.
-## Tipos de Ruleta
-Existen diversos tipos de ruleta, pero las dos más comunes son:
 
-* **Ruleta Europea**: Consta de 37 casillas numeradas del 0 al 36. La casilla "0" es verde, mientras que las demás se alternan entre rojo y negro.
-* **Ruleta Americana**: Similar a la europea, pero incluye una casilla adicional, el "00", lo que eleva el total a 38 casillas.
+## La ventaja del Casino
+La ventaja del casino proviene de la presencia del cero (0) y, en la ruleta americana, del doble cero (00). 
 
-
-
-### Titulo de tercer nivel
+Por ejenplo, en una apuesta a rojo/negro, hay 18 resultados favorables y 19 resultados desfavorables en la ruleta europea (incluyendo el 0).Esto hace que la probabilidad no sea exactamente 50%, garantizando así que, a largo plazo, el casino tenga una ganancia fija.
 
 
-# Tipos de letra
-*Texto en cursiva*
+Esta ventaja se puede calcular porcentualmente como:
 
-**Texto en negrilla**
+- **Ruleta Europea**:  
+  \[
+  \text{Ventaja} = \frac{1}{37} \approx 2.7\%
+  \]
 
-***Texto en cursiva y negrilla***
+- **Ruleta Americana**:  
+  \[
+  \text{Ventaja} = \frac{2}{38} \approx 5.26\%
+  \]
 
-# Links
-Agregar hipervínculos: [Link a Cormoran](http://ingsistemas.uis.edu.co/eisi/)
 
+# La Ruleta como Distribución Binomial
+
+La ruleta puede modelarse como una distribución binomial en ciertos tipos de apuestas, especialmente en aquellas donde el resultado de cada jugada es un evento con dos resultados posibles: ganar o perder. Esto se puede observar en las apuestas de dinero par, como Rojo/Negro, Par/Impar, y 1-18/19-36. Estas apuestas tienen solo dos resultados posibles (ganar o perder), lo que las hace aptas para modelarse con la distribución binomial.
+
+
+## Concepto de distribución Binomial
+La distribución binomial describe el número de éxitos (eventos favorables) en una secuencia de ensayos independientes, cuando la probabilidad de éxito en cada ensayo es constante. En términos matemáticos, se define como:
+
+\begin{equation} 
+  f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k} \hspace{1cm} (Ec. 1)
+\end{equation}
+
+## Apuestas con distribución binomial
+Para una apuesta de dinero par (como Rojo/Negro), el éxito se define como ganar la apuesta, y el fracaso como perderla. Veamos cómo se aplica la distribución binomial:
+
+1. Número de ensayos (n): El número de giros de la ruleta o jugadas que se realizan. 
+2. Probabilidad de éxito (p): La probabilidad de que la apuesta salga ganadora en una jugada.
+
+* Para la ruleta europea, la probabilidad de ganar una apuesta en Rojo/Negro es 
+$$
+P_{\text{ganar}} = \frac{18}{37}
+$$
+* Para la ruleta americana, la probabilidad de ganar una apuesta en Rojo/Negro es
+
+$$
+P_{\text{ganar}} = \frac{18}{38}
+$$
+  
+3. Número de éxitos (X): El número de veces que se gana la apuesta. Esto es lo que queremos modelar y contar.
+
+## Valor Esperado de una apuesta
+  El objetivo de jugar a la ruleta es aprovechar el azar para obtener ganancias, lo que en teoría parece una forma "sencilla" de ganar dinero. Sin embargo, antes de jugar, es fundamental analizar cuán rentable es una apuesta desde el punto de vista estadístico. Para esto, calculamos la **ganancia esperada**, una medida que nos indica cuánto dinero podemos ganar o perder, en promedio, por cada apuesta realizada.
+
+El concepto de **valor esperado** se aplica a una variable aleatoria, en este caso, la ganancia obtenida en una apuesta. Para ilustrarlo, tomemos el ejemplo de una apuesta simple como jugar al **rojo/negro** en la ruleta americana.
+
+El valor esperado \( E(X) \) se calcula como:
+
+\[
+E(X) = (1) \cdot P(\text{ganar}) + (-1) \cdot P(\text{perder})
+\]
+
+Donde:
+- \( P(\text{ganar}) = \frac{18}{38} \): probabilidad de ganar.
+- \( P(\text{perder}) = \frac{20}{38} \): probabilidad de perder.
+
+Sustituyendo los valores:
+
+\[
+E(X) = \frac{18}{38} - \frac{20}{38} = -\frac{2}{38} = -0.0526
+\]
+
+En promedio, el jugador pierde aproximadamente 0.0526 unidades por cada apuesta, es decir, el 5.26% de la cantidad apostada. Este resultado refleja la ventaja estadística del casino.
 ```{r include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
