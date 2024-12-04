@@ -1,6 +1,8 @@
 ---
-title: "Test"
-author: "Hoover Rueda-Chacón"
+title: "Análisis Estadístico de la Ruleta: ¿Por qué invertir en acciones de Betplay?"
+author: "Carlos Mateo vera |
+Juan José Calderon |
+Julian"
 date: "`r Sys.Date()`"
 output: 
   html_document: 
@@ -13,8 +15,37 @@ lang: es-ES
 ---
 
 
-# Titulo de primer nivel
-## Titulo de segundo nivel
+# La Ruleta
+La ruleta es un juego de azar icónico en los casinos, conocido tanto por su simplicidad como por su capacidad de ofrecer emocionantes ganancias.Su diseño consta de un disco giratorio dividido en casillas numeradas y de diferentes colores, junto con una bola que gira en sentido opuesto. El número y color en el que se detenga la bola determinan el resultado del juego.
+
+En la ruleta, los jugadores colocan fichas en la mesa para apostar en función de sus predicciones sobre el resultado del giro. Existen diferentes tipos de apuestas, clasificadas en apuestas internas y apuestas externas, cada una con sus propias probabilidades y pagos.
+
+## Tipos de Ruleta
+* **Ruleta Europea**: Consta de 37 casillas numeradas del 0 al 36. La casilla "0" es v erde, mientras que las demás se alternan entre rojo y negro.
+* **Ruleta Americana**: Similar a la europea, pero incluye una casilla adicional, el "00", lo que eleva el total a 38 casillas.
+
+1. **Apuestas Internas**
+Estas apuestas se colocan directamente en los números individuales o en combinaciones específicas dentro del área numerada de la mesa. Ofrecen pagos altos, pero tienen menor probabilidad de éxito:
+* Pleno (Straight-Up): Apostar a un solo número. Pago: 35 a 1.
+* Dividida (Split): Apostar a dos números adyacentes. Pago: 17 a 1.
+* Calle (Street): Apostar a tres números consecutivos en una fila horizontal. Pago: 11 a 1.
+* Esquina (Corner): Apostar a cuatro números que forman un cuadrado. Pago: 8 a 1.
+* Línea (Line): Apostar a seis números consecutivos en dos filas adyacentes. Pago: 5 a 1.
+2. **Apuestas Externas**
+Estas apuestas cubren grupos más amplios de números, lo que las hace menos arriesgadas, pero con pagos más bajos:
+* Rojo/Negro: Apostar al color del número ganador. Pago: 1 a 1.
+* Par/Impar: Apostar a si el número será par o impar. Pago: 1 a 1.
+* Alta/Baja: Apostar si el número estará entre 1-18 (bajo) o 19-36 (alto). Pago: 1 a 1.
+* Docena: Apostar a uno de los tres grupos de 12 números (1-12, 13-24, 25-36). Pago: 2 a 1.
+* Columna: Apostar a una de las tres columnas verticales de números. Pago: 2 a 1.
+## Tipos de Ruleta
+Existen diversos tipos de ruleta, pero las dos más comunes son:
+
+* **Ruleta Europea**: Consta de 37 casillas numeradas del 0 al 36. La casilla "0" es verde, mientras que las demás se alternan entre rojo y negro.
+* **Ruleta Americana**: Similar a la europea, pero incluye una casilla adicional, el "00", lo que eleva el total a 38 casillas.
+
+
+
 ### Titulo de tercer nivel
 
 
