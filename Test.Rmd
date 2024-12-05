@@ -1,5 +1,5 @@
 ---
-title: "Análisis Estadístico de la Ruleta: ¿Por qué invertir en acciones de Betplay?"
+title: "Análisis Estadístico de la Ruleta: ¿Que formas 'seguras' hay de ganar"
 author: "Carlos Mateo vera |
 Juan José Calderon |
 Julian Prada"
@@ -115,94 +115,305 @@ E(X) = \frac{18}{38} - \frac{20}{38} = -\frac{2}{38} = -0.0526
 
 En promedio, el jugador pierde aproximadamente 0.0526 unidades por cada apuesta, es decir, el 5.26% de la cantidad apostada. Este resultado refleja la ventaja estadística del casino.
 
+# Estrategia
+Si bien en los juegos de azar, como su nombre lo indica la aleatoriedad juega un papel fundamental en el desarrollo del mismo, no hay nada seguro, pues, predecir a ciencia cierta que es lo que va a suceder es casi imposible, pues entre más específico se sea más complicado va ser predecir o adivinar, un ejemplo de esto es la misma ruleta, pues predecir que número va a caer exactamente es mucho más complicado que decir un rango de números más amplio dónde nosotros predecimos que lo más probable es que se encuentre allí; Más, sin embargo, normalmente hay un vacío legal del que se puede aprovechar, en ese caso plantearemos una estrategia para poder, si bien poco, ganar la mayoría de las veces pisables.
+
+## Explicación 
+La estrategia consiste en que, sabiendo que la apuesta por docenas multiplica por dos, o sea paga el doble, podemos hacer una 'configuración' en las que nuestras chances de ganar sean él doble que las chances de perder la mitad del dinero y el duodécuplo de perderlo todo.
+Si ponemos dos fichas de (puede ser cualquier valor, pero para términos prácticos usaremos de fichas de 100 y 200) 200 en las docenas de los 'extremos' de la mesa, osase en la docena del 1-12 y en la del 25-36 y una de 100 en la docena de la mitad, ósea de 13-24, tenemos la probabilidad del $\frac{24}{37}$ de ganar 100 si cae entre 1-12 o 24-36, un $\frac{12}{37}$ de perder el 60% de mi apuesta inicial si cae entre 13-24 y $\frac{1}{37}$ de perder todo si cae 0.
+
+![Ruleta tablero/Tablero de la Ruleta Amerícana/figura número 1 - Ruleta Ameŕicana](Tablero ruleta_0.jpg){width=800 height=400}
 
 ## Simulación en R
-En esta sección, se describe el proceso de simulación en R, incluyendo las reglas de la ruleta francesa y la implementación del modelo.
-
-### Configuración Inicial 
-En esta parte, configuramos el entorno de trabajo y definimos los parámetros clave para la simulación:
-
-``` {r setup_inicial}
-# Configuración básica
-set.seed(123)  # Para reproducibilidad
-ruleta <- 0:36  # Números posibles en la ruleta
-
-# Apuestas seleccionadas
-# Dos columnas (1-34 y 2-35) y dos docenas (1-12 y 13-24)
-columnas <- list(c(1, 4, 7, 10, 13, 16, 19, 22, 25, 28, 31, 34),
-                 c(2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35))
-docenas <- list(1:12, 13:24)
-
-# Pagos de la ruleta
-pago_columna <- 2   # 2:1 en columnas
-pago_docena <- 2    # 2:1 en docenas
-
-```
+En esta sección, se describe el proceso de simulación en R, para la estrategia abordada anteriormente.
 
 
-``` {r simulacion-giro}
-# Función para simular un giro y calcular resultados
-  simular_giro <- function() {
-  resultado <- sample(ruleta, size = 1)  # Número aleatorio de la ruleta
+```{r Simular_estrategia}
+docenas <- data.frame(
+  Docena1 = 1:12,       
+  Docena2 = 13:24,      
+  Docena3 = 25:36       
+)
+semilla <- as.numeric(format(Sys.time(), "%S"))
+set.seed(semilla)
 
-  # Evaluar si el resultado cae en las apuestas seleccionadas
-  gana_columna <- sum(sapply(columnas, function(col) resultado %in% col))
-  gana_docena <- sum(sapply(docenas, function(doc) resultado %in% doc))
+simular_estrategia <- function() {
   
-  #definimos el valor de apuesta total
-  apuesta_total <- 2
-  # Calcular ganancias totales
-  ganancias <- (gana_columna * pago_columna) + (gana_docena * pago_docena)
+  ruleta <- 0:36
+  resultado <- sample(ruleta, size = 1)
   
-  return(list(resultado = resultado, ganancias = ganancias))
-}
-
-# Prueba de la función
-simular_giro()
-
-```
-
-
-```{r simulacion-rondas}
-# Función para simular varias rondas
-simular_rondas <- function(n_rondas) {
-  resultados <- replicate(n_rondas, simular_giro(), simplify = FALSE)
-  data.frame(
-    Ronda = 1:n_rondas,
-    Resultado = sapply(resultados, function(x) x$resultado),
-    Ganancias = sapply(resultados, function(x) x$ganancias)
+  apuestas <- data.frame(
+    docena_1 = 200,
+    docena_2 = 100,
+    docena_3 = 200
   )
+  
+  ganancias <- 0
+  
+  if (resultado %in% docenas$Docena1) {
+  
+    ganancias <- (apuestas$docena_1 * 2 - 500) + apuestas$docena_1
+    
+  } else if (resultado %in% docenas$Docena2) {
+    
+    ganancias <- (apuestas$docena_2 * 2 - 500)  + apuestas$docena_2
+    
+  } else if (resultado %in% docenas$Docena3) {
+    
+    ganancias <- (apuestas$docena_3 * 2 - 500) +   apuestas$docena_3
+    
+  } else {
+    
+    ganancias <- -500  
+  }
+  
+  return(list(resultado = resultado, ganancias_net = ganancias))
 }
 
-# Simular 1000 rondas
-rondas <- simular_rondas(1000)
-head(rondas)
+simulacion <- simular_estrategia()
+print(simulacion)
 
 ```
 
-#### **4. Análisis de resultados**
-Analiza las ganancias totales y promedio.
 
-### Análisis de resultados
+```{r simulacion_rondas}
+simular_varios <- function(n) {
+  
+  juegos <- data.frame(
+    resultado = numeric(0), 
+    ganancias_net = numeric(0),
+    contador = numeric(0))
+  
+  contador1 <- 0
 
-```{r analisis-resultados-ganancias}
-summary(rondas$Ganancias)
-table(rondas$Ganancias)
-# Cálculo de estadísticas básicas
-ganancia_total <- sum(rondas$Ganancias)
-ganancia_promedio <- mean(rondas$Ganancias)
+  for (i in 1:n) {  
+    
+    contador1 <- contador1 + 1
+        
+    simulacion <- simular_estrategia()  
 
-cat("Ganancia total:", ganancia_total, "\n")
-cat("Ganancia promedio por ronda:", ganancia_promedio, "\n")
+    juegos <- rbind(juegos, 
+                    data.frame(resultado = simulacion$resultado, 
+                        ganancias_net = simulacion$ganancias_net,
+                        contador = contador1))
+  }
+  
+  return(juegos)  
+}
 
+```
+
+Ahora observemos como se comporta esta estrategia a la larga, ¿a dónde tiende?
+
+```{r EvolucionGananciasInfinito, echo=TRUE, fig.width=8, fig.height=4}
 library(ggplot2)
-ggplot(rondas, aes(x = Ganancias)) +
-  geom_histogram(binwidth = 1, fill = "blue", color = "black", alpha = 0.7) +
-  labs(title = "Distribución de Ganancias por Ronda", x = "Ganancias", y = "Frecuencia") +
-  theme_minimal()
+
+rondas_infinito <- simular_varios(10000)
+head(rondas_infinito)
+
+rondas_infinito$GananciasAcumuladas <- cumsum(rondas_infinito$ganancias_net)
+
+ggplot(rondas_infinito, aes(x = contador, y = GananciasAcumuladas)) +
+  geom_line(color = "green") +
+  labs(title = "Evolución de las Ganancias Acumuladas",
+       x = "Número de Rondas",
+       y = "Ganancia Acumulada")
+```
+Como ya no lo advertía el 'Valor Esperado' las ganancias a la larga solo tienden a ir en picada, pues recordemos que este era negativo (-0.0526); Perdemos más de lo que ganamos en el infinito y pues no está mal, es la forma que él tiene el casino para generar la tan alta rentabilidad que tiene; Y en algunos casos podemos perder dinero aunque hayamos ganado más de las que perdimos, ejemplificando esto último.
+
+```{r Proporción_victorias_derrotas, echo=TRUE, fig.width=8, fig.height=4}
+rondas_infinito$ResultadoFinal <- ifelse(rondas_infinito$ganancias_net > 0, "Victoria", "Derrota")
+
+ggplot(rondas_infinito, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
+  geom_bar() +
+  scale_fill_manual(values = c("Victoria" = "green", "Derrota" = "red")) +
+  labs(title = "Proporción de Victorias y Derrotas",
+       x = "Resultado",
+       y = "Número de Rondas")
 
 
 ```
+Pero vayamos a un ámbito real, nadie va a hacer 10k juegos en un día, tomemos una persona promedio que disfruta de la emoción que le puedan brindar las apuestas responsablemente, simulemos 10 juegos haciendo uso de la estrategia.
+
+```{r EvolucionGananciasReal, echo=TRUE, fig.width=8, fig.height=4}
+rondas_reales <- simular_varios(10)
+head(rondas_reales)
+
+rondas_reales$GananciasAcumuladas <- cumsum(rondas_reales$ganancias_net)
+
+ggplot(rondas_reales, aes(x = contador, y = GananciasAcumuladas)) +
+  geom_line(color = "green") +
+  labs(title = "Evolución de las Ganancias Acumuladas",
+       x = "Número de Rondas",
+       y = "Ganancia Acumulada")
+
+rondas_reales$ResultadoFinal <- ifelse(rondas_reales$ganancias_net > 0, "Victoria", "Derrota")
+
+ggplot(rondas_reales, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
+  geom_bar() +
+  scale_fill_manual(values = c("Victoria" = "green", "Derrota" = "red")) +
+  labs(title = "Proporción de Victorias y Derrotas",
+       x = "Resultado",
+       y = "Número de Rondas")
+
+```
+
+Y observamos cosas interesantes, con un poco de suerte podemos obtener ganancias netas considerables, pero; ¿Habrá sido suerte?
+Consideremos ahora un promedio de 10 veces 10 rondas; Es decir, imagina que vas 10 días seguidos al casino y haces 10 juegos usando la estrategia, a ver qué resultados podemos obtener
+
+```{r PromedioDiezJuegos1, echo=TRUE, fig.width=8, fig.height=4}
+
+simular_Diez_Rondas <- function(n) {
+  
+  rondas_diez <- data.frame(
+    resultado = numeric(0), 
+    ganancias_net = numeric(0),
+    contador = numeric(0)
+  )
+  
+  for (i in 1:n) {
+    simulacion <- simular_varios(10)
+    
+    resultado_promedio <- mean(simulacion$resultado)
+    ganancias_net <- sum(simulacion$ganancias_net) 
+    
+    rondas_diez <- rbind(rondas_diez,
+                         data.frame(resultado = resultado_promedio, 
+                                    ganancias_net = ganancias_net,
+                                    contador = i))
+  }
+  
+  return(rondas_diez)
+}
+
+
+rondas_diez <-simular_Diez_Rondas(10)
+head(rondas_diez)
+
+rondas_diez$GananciasAcumuladas <- cumsum(rondas_diez$ganancias_net)
+
+ggplot(rondas_diez, aes(x = contador, y = GananciasAcumuladas)) +
+  geom_line(color = "green") +
+  labs(title = "Evolución de las Ganancias Acumuladas",
+       x = "Número de Rondas",
+       y = "Ganancia Acumulada")
+
+rondas_diez$ResultadoFinal <- ifelse(rondas_diez$ganancias_net > 0, "Victoria", "Derrota")
+
+ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
+  geom_bar() +
+  scale_fill_manual(values = c("Victoria" = "green", "Derrota" = "red")) +
+  labs(title = "Proporción de Victorias y Derrotas",
+       x = "Resultado",
+       y = "Número de Rondas")
+
+```
+
+Notamos que vuelven a haber perdida, ¿no se suponía que la estrategia servía para ganar fácil? probemos dos veces más
+
+```{r PromedioDiezJuegos2, echo=FALSE, fig.width=8, fig.height=4}
+
+simular_Diez_Rondas <- function(n) {
+  
+  rondas_diez <- data.frame(
+    resultado = numeric(0), 
+    ganancias_net = numeric(0),
+    contador = numeric(0)
+  )
+  
+  for (i in 1:n) {
+    simulacion <- simular_varios(10)
+    
+    resultado_promedio <- mean(simulacion$resultado)
+    ganancias_net <- sum(simulacion$ganancias_net) 
+    
+    rondas_diez <- rbind(rondas_diez,
+                         data.frame(resultado = resultado_promedio, 
+                                    ganancias_net = ganancias_net,
+                                    contador = i))
+  }
+  
+  return(rondas_diez)
+}
+
+
+rondas_diez <-simular_Diez_Rondas(10)
+head(rondas_diez)
+
+rondas_diez$GananciasAcumuladas <- cumsum(rondas_diez$ganancias_net)
+
+ggplot(rondas_diez, aes(x = contador, y = GananciasAcumuladas)) +
+  geom_line(color = "green") +
+  labs(title = "Evolución de las Ganancias Acumuladas",
+       x = "Número de Rondas",
+       y = "Ganancia Acumulada")
+
+rondas_diez$ResultadoFinal <- ifelse(rondas_diez$ganancias_net > 0, "Victoria", "Derrota")
+
+ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
+  geom_bar() +
+  scale_fill_manual(values = c("Victoria" = "green", "Derrota" = "red")) +
+  labs(title = "Proporción de Victorias y Derrotas",
+       x = "Resultado",
+       y = "Número de Rondas")
+
+```
+
+```{r PromedioDiezJuegos3, echo=FALSE, fig.width=8, fig.height=4}
+
+simular_Diez_Rondas <- function(n) {
+  
+  rondas_diez <- data.frame(
+    resultado = numeric(0), 
+    ganancias_net = numeric(0),
+    contador = numeric(0)
+  )
+  
+  for (i in 1:n) {
+    simulacion <- simular_varios(10)
+    
+    resultado_promedio <- mean(simulacion$resultado)
+    ganancias_net <- sum(simulacion$ganancias_net) 
+    
+    rondas_diez <- rbind(rondas_diez,
+                         data.frame(resultado = resultado_promedio, 
+                                    ganancias_net = ganancias_net,
+                                    contador = i))
+  }
+  
+  return(rondas_diez)
+}
+
+
+rondas_diez <-simular_Diez_Rondas(10)
+head(rondas_diez)
+
+rondas_diez$GananciasAcumuladas <- cumsum(rondas_diez$ganancias_net)
+
+ggplot(rondas_diez, aes(x = contador, y = GananciasAcumuladas)) +
+  geom_line(color = "green") +
+  labs(title = "Evolución de las Ganancias Acumuladas",
+       x = "Número de Rondas",
+       y = "Ganancia Acumulada")
+
+rondas_diez$ResultadoFinal <- ifelse(rondas_diez$ganancias_net > 0, "Victoria", "Derrota")
+
+ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
+  geom_bar() +
+  scale_fill_manual(values = c("Victoria" = "green", "Derrota" = "red")) +
+  labs(title = "Proporción de Victorias y Derrotas",
+       x = "Resultado",
+       y = "Número de Rondas")
+
+```
+
+# Resultdos
+Notemos que el comportamiento en totalmente impredecible, algunas veces aparecen valores favorables y otras veces no, eso sumado a la ventaja que lleva el casino del cero, se hace totalmente imposible ganar de manera repetida en la ruleta.
+¿Entonces esto significa que la estrategia realmente no aporta? Pues no del todo, si bien ya concluimos que es complicado ganar repetidas veces, la estrategia nos ayuda a reducir pérdida en las situaciones desfavorables, aparte de que observando las gráficas nos podríamos atrever a decir que: Una, si el juego comienza mal en los primeros 3 intentos, hay que retirarse y Dos, si las ganancias comienzan a caer después de haber tenido una larga racha, también es momento de retirarse.
+Más, sin embargo, en cualquier caso, gracias a los resultados, concluimos que no hay que esperar mucho de este juego, puede haber muchas estrategias sutiles y muy buenas, pero la aleatoriedad siempre nos jugara en contra, úsala y diviértete sin expectativa alguna de esperar algo a cambio y no uses dinero importante, si es la colegiatura de los niños, mejor guardársela.
+
+
+
 
 
 
