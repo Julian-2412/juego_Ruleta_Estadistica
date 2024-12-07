@@ -662,7 +662,7 @@ ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
 
 ```
 
-  # Discusión
+# Discusión
   
   Es evidente que el comportamiento de la ruleta es completamente impredecible. En ocasiones se obtienen resultados favorables, pero en otras no, y esta incertidumbre se combina con la ventaja inherente del casino debido a la presencia del cero. Esto hace que sea prácticamente imposible ganar de manera consistente en este juego.
   
@@ -672,7 +672,7 @@ ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
   
   2. Si después de una buena racha las ganancias empiezan a caer, también es momento de detenerse.
   
-  # Conclusión
+# Conclusión
   
   Los resultados nos llevan a una conclusión fundamental: no se debe esperar demasiado de este juego. La ruleta, como otros juegos de azar, está diseñada de manera que las probabilidades siempre favorecen al casino a largo plazo, lo que significa que las ganancias sostenidas son, en la práctica, inalcanzables para el jugador promedio. Aunque puedan existir estrategias interesantes que busquen maximizar las oportunidades de éxito o minimizar las pérdidas, la aleatoriedad inherente al juego siempre será un factor en contra. Ninguna estrategia puede alterar las matemáticas subyacentes del juego ni eliminar la ventaja que tiene el casino.
   

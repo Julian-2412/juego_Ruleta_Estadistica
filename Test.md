@@ -211,10 +211,6 @@ Esta lógica puede aplicarse a cualquier apuesta del casino. Para analizar cómo
 ## 10       Línea 0.16216216    5    -0.02702704       -0.02702704
 ```
 
-```
-## Warning: package 'ggplot2' was built under R version 4.4.2
-```
-
 ![](Test_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
 
 
@@ -354,10 +350,10 @@ print(simulacion)
 
 ```
 ## $resultado
-## [1] 13
+## [1] 7
 ## 
 ## $ganancias_net
-## [1] -200
+## [1] 100
 ```
 
 
@@ -402,12 +398,12 @@ head(rondas_infinito)
 
 ```
 ##   resultado ganancias_net contador
-## 1         0          -500        1
-## 2         5           100        2
-## 3        19          -200        3
-## 4        13          -200        4
+## 1        21          -200        1
+## 2         8           100        2
+## 3        27           100        3
+## 4        36           100        4
 ## 5        28           100        5
-## 6         6           100        6
+## 6        31           100        6
 ```
 
 ``` r
@@ -448,12 +444,12 @@ head(rondas_reales)
 
 ```
 ##   resultado ganancias_net contador
-## 1         7           100        1
-## 2         9           100        2
-## 3         1           100        3
-## 4        16          -200        4
-## 5         2           100        5
-## 6        13          -200        6
+## 1        36           100        1
+## 2         3           100        2
+## 3        13          -200        3
+## 4        36           100        4
+## 5        11           100        5
+## 6        31           100        6
 ```
 
 ``` r
@@ -516,12 +512,12 @@ head(rondas_diez)
 
 ```
 ##   resultado ganancias_net contador
-## 1      14.1           100        1
-## 2      18.8          -200        2
-## 3      22.2          -200        3
-## 4      15.1           100        4
-## 5      22.3          -800        5
-## 6      16.8           400        6
+## 1      19.5          -200        1
+## 2      15.7           700        2
+## 3      18.2          -200        3
+## 4      16.9           400        4
+## 5      15.3          -800        5
+## 6      16.1           100        6
 ```
 
 ``` r
@@ -554,12 +550,12 @@ Notamos que vuelven a haber perdida, ¿no se suponía que la estrategia servía 
 
 ```
 ##   resultado ganancias_net contador
-## 1      18.8           400        1
-## 2      21.3          -200        2
-## 3      20.6           400        3
-## 4      19.9          -500        4
-## 5      20.3          -200        5
-## 6      18.2           100        6
+## 1      23.3          -500        1
+## 2      20.3           100        2
+## 3      15.2         -1400        3
+## 4      19.7           100        4
+## 5      17.8          -200        5
+## 6      15.4           400        6
 ```
 
 ![](Test_files/figure-html/PromedioDiezJuegos2-1.png)<!-- -->![](Test_files/figure-html/PromedioDiezJuegos2-2.png)<!-- -->
@@ -568,17 +564,17 @@ Notamos que vuelven a haber perdida, ¿no se suponía que la estrategia servía 
 
 ```
 ##   resultado ganancias_net contador
-## 1      20.6          -500        1
-## 2      15.3          -500        2
-## 3      16.0          -500        3
-## 4      15.6          -200        4
-## 5      13.6           100        5
-## 6      22.9          -500        6
+## 1      19.5          -800        1
+## 2      14.4          -800        2
+## 3      18.7         -1100        3
+## 4      20.9          -500        4
+## 5      19.4           700        5
+## 6      21.0           700        6
 ```
 
 ![](Test_files/figure-html/PromedioDiezJuegos3-1.png)<!-- -->![](Test_files/figure-html/PromedioDiezJuegos3-2.png)<!-- -->
 
-  # Discusión
+# Discusión
   
   Es evidente que el comportamiento de la ruleta es completamente impredecible. En ocasiones se obtienen resultados favorables, pero en otras no, y esta incertidumbre se combina con la ventaja inherente del casino debido a la presencia del cero. Esto hace que sea prácticamente imposible ganar de manera consistente en este juego.
   
@@ -588,7 +584,7 @@ Notamos que vuelven a haber perdida, ¿no se suponía que la estrategia servía 
   
   2. Si después de una buena racha las ganancias empiezan a caer, también es momento de detenerse.
   
-  # Conclusión
+# Conclusión
   
   Los resultados nos llevan a una conclusión fundamental: no se debe esperar demasiado de este juego. La ruleta, como otros juegos de azar, está diseñada de manera que las probabilidades siempre favorecen al casino a largo plazo, lo que significa que las ganancias sostenidas son, en la práctica, inalcanzables para el jugador promedio. Aunque puedan existir estrategias interesantes que busquen maximizar las oportunidades de éxito o minimizar las pérdidas, la aleatoriedad inherente al juego siempre será un factor en contra. Ninguna estrategia puede alterar las matemáticas subyacentes del juego ni eliminar la ventaja que tiene el casino.
   
