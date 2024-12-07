@@ -662,23 +662,23 @@ ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
 
 ```
 
-# Discusión
-
-Es evidente que el comportamiento de la ruleta es completamente impredecible. En ocasiones se obtienen resultados favorables, pero en otras no, y esta incertidumbre se combina con la ventaja inherente del casino debido a la presencia del cero. Esto hace que sea prácticamente imposible ganar de manera consistente en este juego.
-
-¿Significa esto que la estrategia no tiene ningún valor? No necesariamente. Aunque hemos concluido que es complicado obtener ganancias repetidas veces, la estrategia puede ser útil para reducir las pérdidas en situaciones desfavorables. Además, al observar los patrones en las gráficas, podríamos establecer dos recomendaciones prácticas:
-
-1. Si el juego comienza con resultados negativos en los primeros tres intentos, es mejor retirarse.
-
-2. Si después de una buena racha las ganancias empiezan a caer, también es momento de detenerse.
-
-# Conclusión
-
-Los resultados nos llevan a una conclusión fundamental: no se debe esperar demasiado de este juego. La ruleta, como otros juegos de azar, está diseñada de manera que las probabilidades siempre favorecen al casino a largo plazo, lo que significa que las ganancias sostenidas son, en la práctica, inalcanzables para el jugador promedio. Aunque puedan existir estrategias interesantes que busquen maximizar las oportunidades de éxito o minimizar las pérdidas, la aleatoriedad inherente al juego siempre será un factor en contra. Ninguna estrategia puede alterar las matemáticas subyacentes del juego ni eliminar la ventaja que tiene el casino.
-
-Por ello, es importante abordar el juego de la ruleta como una actividad de entretenimiento y no como un medio para obtener ingresos o solucionar problemas financieros. Juega únicamente con dinero que estés dispuesto a perder, sin poner en riesgo tus necesidades básicas o las de tus seres queridos. El uso de dinero destinado a gastos importantes, como la colegiatura de los niños, los ahorros para emergencias o el presupuesto familiar, sería un error crítico que podría generar problemas serios a nivel personal y financiero.
-
-En última instancia, la clave para disfrutar de este tipo de actividades radica en mantener expectativas realistas y comprender los límites del juego. Al final, la ruleta debe ser vista como una experiencia recreativa, un momento para pasar el rato y divertirse, no como una fuente de ganancias aseguradas. Jugar con esta mentalidad no solo reduce la frustración, sino que también fomenta un enfoque responsable y consciente frente a los riesgos inherentes del azar.
+  # Discusión
+  
+  Es evidente que el comportamiento de la ruleta es completamente impredecible. En ocasiones se obtienen resultados favorables, pero en otras no, y esta incertidumbre se combina con la ventaja inherente del casino debido a la presencia del cero. Esto hace que sea prácticamente imposible ganar de manera consistente en este juego.
+  
+  ¿Significa esto que la estrategia no tiene ningún valor? No necesariamente. Aunque hemos concluido que es complicado obtener ganancias repetidas veces, la estrategia puede ser útil para reducir las pérdidas en situaciones desfavorables. Además, al observar los patrones en las gráficas, podríamos establecer dos recomendaciones prácticas:
+  
+  1. Si el juego comienza con resultados negativos en los primeros tres intentos, es mejor retirarse.
+  
+  2. Si después de una buena racha las ganancias empiezan a caer, también es momento de detenerse.
+  
+  # Conclusión
+  
+  Los resultados nos llevan a una conclusión fundamental: no se debe esperar demasiado de este juego. La ruleta, como otros juegos de azar, está diseñada de manera que las probabilidades siempre favorecen al casino a largo plazo, lo que significa que las ganancias sostenidas son, en la práctica, inalcanzables para el jugador promedio. Aunque puedan existir estrategias interesantes que busquen maximizar las oportunidades de éxito o minimizar las pérdidas, la aleatoriedad inherente al juego siempre será un factor en contra. Ninguna estrategia puede alterar las matemáticas subyacentes del juego ni eliminar la ventaja que tiene el casino.
+  
+  Por ello, es importante abordar el juego de la ruleta como una actividad de entretenimiento y no como un medio para obtener ingresos o solucionar problemas financieros. Juega únicamente con dinero que estés dispuesto a perder, sin poner en riesgo tus necesidades básicas o las de tus seres queridos. El uso de dinero destinado a gastos importantes, como la colegiatura de los niños, los ahorros para emergencias o el presupuesto familiar, sería un error crítico que podría generar problemas serios a nivel personal y financiero.
+  
+  En última instancia, la clave para disfrutar de este tipo de actividades radica en mantener expectativas realistas y comprender los límites del juego. Al final, la ruleta debe ser vista como una experiencia recreativa, un momento para pasar el rato y divertirse, no como una fuente de ganancias aseguradas. Jugar con esta mentalidad no solo reduce la frustración, sino que también fomenta un enfoque responsable y consciente frente a los riesgos inherentes del azar.
 
 
 # Referencias
