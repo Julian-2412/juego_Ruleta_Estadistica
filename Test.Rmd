@@ -1,5 +1,5 @@
 ---
-title: "Análisis Estadístico de la Ruleta: ¿Que formas 'seguras' hay de ganar"
+title: "Análisis Estadístico de la Ruleta: ¿Que formas 'seguras' hay de ganar?"
 author: "Carlos Mateo vera |
 Juan José Calderon |
 Julian Prada"
@@ -76,25 +76,8 @@ Esta ventaja se puede calcular porcentualmente como:
 # Metodología
 ## La Ruleta como Distribución Binomial
 
-La ruleta puede modelarse como una distribución binomial en ciertos tipos de apuestas, especialmente en aquellas donde el resultado de cada jugada es un evento con dos resultados posibles: ganar o perder. Esto se puede observar en las apuestas de dinero par, como <span style="color:red;">**rojo**</span>/**negro**, Par/Impar, y 1-18/19-36. Estas apuestas tienen solo dos resultados posibles (ganar o perder), lo que las hace aptas para modelarse con la distribución binomial.
+Todas las diferentes apuestas de la ruleta se pueden modelar como una distribución binomial, ya que para el jugador cada apuesta implica dos posibles resultados: ganar o perder. La diferencia radica en que la probabilidad de ganar y el pago varían dependiendo del tipo de apuesta realizada.
 
-```{r distro_Binomial,echo=FALSE}
-# Parámetros de la distribución binomial
-n <- 100    # Número de ensayos
-p <- 0.5   # Probabilidad de éxito
-
-# Valores posibles (0, 1, ..., n)
-x <- 0:n
-
-# Probabilidades asociadas
-prob <- dbinom(x, size = n, prob = p)
-
-# Crear el gráfico
-plot(x, prob, type = "h", lwd = 4, col = "blue",
-     main = expression(italic("Ejemplo de Distribución Binomial (n = 100, p = 0.5)")),
-     xlab = "Número de éxitos", ylab = "Probabilidad")
-points(x, prob, pch = 16, col = "red")
-```
 
 ### Concepto de distribución Binomial
 La distribución binomial describe el número de éxitos (eventos favorables) en una secuencia de ensayos independientes, cuando la probabilidad de éxito en cada ensayo es constante. En términos matemáticos, se define como:
@@ -103,7 +86,7 @@ La distribución binomial describe el número de éxitos (eventos favorables) en
   f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k} \hspace{1cm} (Ec. 1)
 \end{equation}
 
-## Apuestas con distribución binomial
+## Apuesta <span style="color:red;">rojo</span>/negro como distribución binomial
 Para una apuesta de dinero par (como <span style="color:red;">**rojo**</span>/**negro**), el éxito se define como ganar la apuesta, y el fracaso como perderla. Veamos cómo se aplica la distribución binomial:
 
 1. **Número de ensayos (n):** El número de giros de la ruleta o jugadas que se realizan. 
@@ -123,32 +106,210 @@ $$
   
 3. **Número de éxitos (X):** El número de veces que se gana la apuesta. Esto es lo que nos interesa modelar y contar.
 
+```{r distro_Binomial,echo=FALSE}
+# Parámetros de la distribución binomial
+n <- 100    # Número de ensayos
+p <- 18/37   # Probabilidad de éxito
+
+# Valores posibles (0, 1, ..., n)
+x <- 0:n
+
+# Probabilidades asociadas
+prob <- dbinom(x, size = n, prob = p)
+
+# Crear el gráfico
+plot(x, prob, type = "h", lwd = 4, col = "blue",
+     main = expression(italic("Ejemplo de Distribución Binomial (n = 100, p = 18/37)")),
+     xlab = "Número de éxitos", ylab = "Probabilidad")
+points(x, prob, pch = 16, col = "red")
+```
+
 ## Valor Esperado de una apuesta
   El objetivo principal al jugar a la ruleta es aprovechar el azar para obtener ganancias, lo que en teoría, puede parecer una manera "factible" de ganar dinero. Sin embargo, antes de jugar, es fundamental analizar realmente, cuán rentable es una apuesta desde el punto de vista estadístico. Para esto, se calcula la **ganancia esperada**, una medida que nos indica, en promedio, cuánto dinero podemos ganar o perder por cada apuesta realizada.
 
-El concepto de **valor esperado** se aplica a una variable aleatoria, en este caso, la ganancia obtenida en una apuesta. Para ilustrarlo, consideremos un ejemplo sencillo: realizar apuesta al <span style="color:red;">**rojo**</span>/**negro** en la ruleta americana.
-
-El valor esperado \( E(X) \) se calcula como:
+El valor esperado, denotado como \( E(X) \), para una distribución binomial se calcula mediante la fórmula:
 
 \[
-E(X) = (1) \cdot P(\text{ganar}) + (-1) \cdot P(\text{perder})
+E(X) = n \cdot p
 \]
 
-Donde:
-<center>
-
-\( P(\text{ganar}) = \frac{18}{38} \): probabilidad de ganar.
-
-\( P(\text{perder}) = \frac{20}{38} \): probabilidad de perder.
-
-</center>
-Sustituyendo los valores:
+En este caso, para una sola tirada (\( n = 1 \)) donde la probabilidad de ganar (\( p \)) es \( \frac{18}{37} \), el cálculo del valor esperado es:
 
 \[
-E(X) = \frac{18}{38} - \frac{20}{38} = -\frac{2}{38} = -0.0526
+E[X] = 1 \cdot \frac{18}{37} \approx 48.6\%
 \]
 
-En promedio, el jugador pierde aproximadamente 0.0526 unidades por cada apuesta, es decir, el 5.26% de la cantidad apostada. Resultado que refleja la ventaja estadística que posee el casino.
+Esto significa que, en promedio, si jugamos una vez, ganaremos aproximadamente el 48.6% de las veces.
+
+### Ganancia esperada
+
+Con esta información, podemos calcular la **ganancia esperada** utilizando la fórmula:
+
+\[
+E[G] = E[B] - E[P]
+\]
+
+Donde:  
+- \( E[B] \): Beneficio esperado.  
+- \( E[P] \): Pérdida esperada.  
+
+El beneficio esperado está dado por:  
+
+\[
+E[B] = E[X] \cdot Premio \cdot A
+\]
+
+La pérdida esperada se calcula como:  
+
+\[
+E[P] = (1 - E[X]) \cdot A
+\]
+
+Por lo tanto, la ganancia esperada para una apuesta Rojo/Negro se expresa como:  
+
+\[
+E[G] = E[X] \cdot Premio \cdot A - (1 - E[X]) \cdot A
+\]
+
+Sustituyendo \( E[X] = \frac{18}{37} \), obtenemos:  
+
+\[
+E[G] = \frac{18}{37} \cdot Premio \cdot A - \frac{19}{37} \cdot A
+\]
+
+\[
+E[G] = -\frac{1}{37} \cdot A \approx -2.7\% \cdot A
+\]
+
+En promedio, el jugador pierde aproximadamente el 2.7% de cada unidad apostada, este resultado refleja la ventaja estadística que posee el casino.
+
+### Independencia de las tiradas
+
+Es importante destacar que es una falacia pensar que al jugar más veces seguidas aumentan las probabilidades de obtener el resultado deseado. Cada tirada de la ruleta es independiente, lo que significa que el resultado de una no afecta al de las siguientes.
+
+### ¿Qué ocurre si jugamos 37 veces?
+
+¿Podríamos recuperar nuestras pérdidas o incluso ganar dinero? Analicemos:  
+
+\[
+E[37] = E[X] \cdot Premio \cdot A \cdot 37 - (1 - E[X]) \cdot A \cdot 37
+\]
+
+Sustituyendo \( E[X] = \frac{18}{37} \):  
+
+\[
+E[37] = 37 \cdot \frac{18}{37} \cdot Premio \cdot A - 37 \cdot (1 - \frac{18}{37}) \cdot A
+\]
+
+Simplificando:  
+
+\[
+E[37] = -1 \cdot A = -100\% \cdot A
+\]
+
+Es decir, después de 37 jugadas, en promedio, perderemos el **100%** de lo apostado. Por ejemplo, si apostamos $10,000$ pesos en cada jugada, al cabo de 37 tiradas habremos perdido en promedio **$10,000$ pesos**.
+
+## Ganancias esperadas para las diferentes apuestas 
+
+Esta lógica puede aplicarse a cualquier apuesta del casino. Para analizar cómo varían los valores de las apuestas, se realizó una simulación en R para calcular el **valor esperado** y la **ganancia esperada** por tirada.
+```{r, echo=FALSE}
+# Configuración de la ruleta europea
+total_numeros <- 37  # Números de la ruleta europea (0 al 36)
+apuesta <- 1         # Monto de cada apuesta
+
+# Función para calcular valor esperado y ganancia esperada
+calcular_valores <- function(prob_ganar, pago, apuesta) {
+  valor_esperado <- (pago * prob_ganar) + (-apuesta * (1 - prob_ganar))
+  ganancia_esperada <- valor_esperado / apuesta
+  list(valor_esperado = valor_esperado, ganancia_esperada = ganancia_esperada)
+}
+
+# Probabilidades y pagos para cada tipo de apuesta
+apuestas <- data.frame(
+  tipo = c("Rojo/Negro", "Par/Impar", "Alto/Bajo", "Docenas", "Columnas",
+           "Pleno", "Caballo", "Transversal", "Esquina", "Línea"),
+  prob_ganar = c(18/37, 18/37, 18/37, 12/37, 12/37, 1/37, 2/37, 3/37, 4/37, 6/37),
+  pago = c(1, 1, 1, 2, 2, 35, 17, 11, 8, 5)
+)
+
+# Cálculos para cada tipo de apuesta
+resultados <- apply(apuestas, 1, function(ap) {
+  calcular_valores(as.numeric(ap["prob_ganar"]), as.numeric(ap["pago"]), apuesta)
+})
+
+# Agregar resultados al DataFrame
+apuestas$valor_esperado <- sapply(resultados, function(x) x$valor_esperado)
+apuestas$ganancia_esperada <- sapply(resultados, function(x) x$ganancia_esperada)
+
+# Mostrar los resultados
+print(apuestas)
+
+# Graficar resultados
+library(ggplot2)
+ggplot(apuestas, aes(x = tipo, y = valor_esperado, fill = tipo)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Ganancia esperada en un tiro por tipo de apuesta en la ruleta europea",
+       x = "Tipo de apuesta", y = "Valor esperado") +
+   geom_hline(yintercept = 0, color = "black", linetype = "dashed") +  # Línea en y = 0
+  labs(title = "Valor esperado por tipo de apuesta en la ruleta europea",
+       x = "Tipo de apuesta", y = "Valor esperado") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(limits = c(-0.1, 0.1),  # Ajustar límites del eje Y
+                     breaks = seq(-1.5, 0.2, by = 0.2))  # Marcas del eje Y
+```
+
+
+
+Podemos simular las ganancias esperadas en la ruleta americana, siguiendo la distribución binomial y acomodando los porcentajes (1/38) para cada número tenemos
+
+```{r, echo=FALSE}
+# Configuración de la ruleta europea
+total_numeros <- 38  # Números de la ruleta europea (0 al 36)
+apuesta <- 1         # Monto de cada apuesta
+
+# Función para calcular valor esperado y ganancia esperada
+calcular_valores <- function(prob_ganar, pago, apuesta) {
+  valor_esperado <- (pago * prob_ganar) + (-apuesta * (1 - prob_ganar))
+  ganancia_esperada <- valor_esperado / apuesta
+  list(valor_esperado = valor_esperado, ganancia_esperada = ganancia_esperada)
+}
+
+# Probabilidades y pagos para cada tipo de apuesta
+apuestas <- data.frame(
+  tipo = c("Rojo/Negro", "Par/Impar", "Alto/Bajo", "Docenas", "Columnas",
+           "Pleno", "Caballo", "Transversal", "Esquina", "Línea"),
+  prob_ganar = c(18/38, 18/38, 18/38, 12/38, 12/38, 1/38, 2/38, 3/38, 4/38, 6/38),
+  pago = c(1, 1, 1, 2, 2, 35, 17, 11, 8, 5)
+)
+
+# Cálculos para cada tipo de apuesta
+resultados <- apply(apuestas, 1, function(ap) {
+  calcular_valores(as.numeric(ap["prob_ganar"]), as.numeric(ap["pago"]), apuesta)
+})
+
+# Agregar resultados al DataFrame
+apuestas$valor_esperado <- sapply(resultados, function(x) x$valor_esperado)
+apuestas$ganancia_esperada <- sapply(resultados, function(x) x$ganancia_esperada)
+
+# Mostrar los resultados
+print(apuestas)
+
+# Graficar resultados
+library(ggplot2)
+ggplot(apuestas, aes(x = tipo, y = valor_esperado, fill = tipo)) +
+  geom_bar(stat = "identity") +
+  labs(title = "Valor esperado por tipo de apuesta en la ruleta europea",
+       x = "Tipo de apuesta", y = "Valor esperado") +
+   geom_hline(yintercept = 0, color = "black", linetype = "dashed") +  # Línea en y = 0
+  labs(title = "Valor esperado por tipo de apuesta en la ruleta americana",
+       x = "Tipo de apuesta", y = "Valor esperado") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(limits = c(-0.1, 0.1),  # Ajustar límites del eje Y
+                     breaks = seq(-1.5, 0.2, by = 0.2))  # Marcas del eje Y
+
+```
 
 ## Estrategia
 Si bien en los juegos de azar, como su nombre lo indica, la aleatoriedad es un factor fundamental en su desarrollo, no existen certezas absolutas. Predecir a ciencia cierta lo que va a suceder es prácticamente imposible, pues entre más específico sea el evento a predecir, más complicado resultará hacerlo. Un ejemplo de esto es la ruleta: realizar una predicción del número exacto en el que caerá la bola es una hazaña mucho más díficil que predecir un rango de números donde es más probable que caiga. 
@@ -167,6 +328,51 @@ La configuración consiste en colocar dos fichas(pueden ser cualquier valor, per
 <center>![Tablero de Ruleta con las Probabilidades Descritas](Images\tableroRuleta.png){width=400 height=250}
 
 _**Fuente**: [@imagen4]_</center>
+
+### Ganancia esperada de la estrategia 
+
+Los datos que usaremos para calcular la ganancia esperado son los siguientes:
+
+- **Total apostado**: \( 200 + 200 + 100 = 500 \).
+- **Pago por docena**: \( 2:1 \).
+- **Probabilidades**:
+- Probabilidad de ganar en la docena 1-12: \( \frac{12}{37} \).
+- Probabilidad de ganar en la docena 13-24: \( \frac{12}{37} \).
+- Probabilidad de ganar en la docena 25-36: \( \frac{12}{37} \).
+- Probabilidad de perder (ninguna de las docenas ganadoras): \( \frac{1}{37} \).
+
+Vamos a calcular cuánto es la ganancia para cada caso:
+
+- **Si se gana en la docena 1-12**: 
+  - Ganancia = \( 200 \times 2 = 400 \).
+  - Se pierden las apuestas en las docenas 13-24 (100) y 25-36 (200).
+  - Ganancia neta = \( 400 - 100 - 200 = 100 \).
+  
+- **Si se gana en la docena 13-24**:
+  - Ganancia = \( 100 \times 2 = 200 \).
+  - Se pierden las apuestas en las docenas 1-12 (200) y 25-36 (200).
+  - Ganancia neta = \( 200 - 200 - 200 = -200 \).
+  
+- **Si se gana en la docena 25-36**:
+  - Ganancia = \( 200 \times 2 = 400 \).
+  - Se pierden las apuestas en las docenas 1-12 (200) y 13-24 (100).
+  - Ganancia neta = \( 400 - 200 - 100 = 100 \).
+
+- **Si se pierde (0)**:
+  - Ganancia neta = \( -500 \) 
+
+
+
+Se calcula la **ganancia esperada E[X]** como el promedio ponderado de las ganancias, tomando en cuenta las probabilidades de cada escenario. La fórmula es:
+
+\[
+E[G] = \left(\frac{12}{37} \cdot 100 \right) + \left(\frac{12}{37} \cdot (-200) \right) + \left(\frac{12}{37} \cdot 100 \right) + \left(\frac{1}{37} \cdot (-500) \right)
+\]
+
+Obtenemos que el valor esperado al realizar esta apuesta, resulta negativo
+\[
+E[G] = \frac{-500}{37}
+\]
 
 ### Simulación en R
 En esta sección, se describe el proceso de simulación en R, para la estrategia abordada anteriormente.
@@ -265,6 +471,7 @@ ggplot(rondas_infinito, aes(x = contador, y = GananciasAcumuladas)) +
        x = "Número de Rondas",
        y = "Ganancia Acumulada")
 ```
+
 Como ya nos lo advertía el 'Valor Esperado' las ganancias a la larga solo tienden a ir en picada, pues recordemos que este era negativo (-0.0526); Se pierde más de lo que se gana cuando el número de rondas tiende al infinito. Esta es la forma que tiene el casino para generar su tan alta rentabilidad; Y en algunos casos se puede llegar a perder dinero pese a que el número de victorias sea mayor. Ejemplificando esto:
 
 ```{r Proporción_victorias_derrotas, echo=TRUE, fig.width=8, fig.height=4}
@@ -279,6 +486,7 @@ ggplot(rondas_infinito, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
 
 
 ```
+
 Pero vayamos a un ámbito real, nadie va a hacer 10k juegos en un día, tomemos una persona promedio que disfruta de la emoción que le puedan brindar las apuestas responsablemente, simulemos 10 juegos haciendo uso de la estrategia.
 
 ```{r EvolucionGananciasReal, echo=TRUE, fig.width=8, fig.height=4}
@@ -405,6 +613,7 @@ ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
 
 ```
 
+
 ```{r PromedioDiezJuegos3, echo=FALSE, fig.width=8, fig.height=4}
 
 simular_Diez_Rondas <- function(n) {
@@ -473,7 +682,5 @@ En última instancia, la clave para disfrutar de este tipo de actividades radica
 
 
 # Referencias
-
-
 
 

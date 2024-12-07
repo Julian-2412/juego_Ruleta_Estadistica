@@ -1,5 +1,5 @@
 ---
-title: "Análisis Estadístico de la Ruleta: ¿Que formas 'seguras' hay de ganar"
+title: "Análisis Estadístico de la Ruleta: ¿Que formas 'seguras' hay de ganar?"
 author: "Carlos Mateo vera |
 Juan José Calderon |
 Julian Prada"
@@ -76,9 +76,8 @@ Esta ventaja se puede calcular porcentualmente como:
 # Metodología
 ## La Ruleta como Distribución Binomial
 
-La ruleta puede modelarse como una distribución binomial en ciertos tipos de apuestas, especialmente en aquellas donde el resultado de cada jugada es un evento con dos resultados posibles: ganar o perder. Esto se puede observar en las apuestas de dinero par, como <span style="color:red;">**rojo**</span>/**negro**, Par/Impar, y 1-18/19-36. Estas apuestas tienen solo dos resultados posibles (ganar o perder), lo que las hace aptas para modelarse con la distribución binomial.
+Todas las diferentes apuestas de la ruleta se pueden modelar como una distribución binomial, ya que para el jugador cada apuesta implica dos posibles resultados: ganar o perder. La diferencia radica en que la probabilidad de ganar y el pago varían dependiendo del tipo de apuesta realizada.
 
-![](Test_files/figure-html/distro_Binomial-1.png)<!-- -->
 
 ### Concepto de distribución Binomial
 La distribución binomial describe el número de éxitos (eventos favorables) en una secuencia de ensayos independientes, cuando la probabilidad de éxito en cada ensayo es constante. En términos matemáticos, se define como:
@@ -87,7 +86,7 @@ La distribución binomial describe el número de éxitos (eventos favorables) en
   f\left(k\right) = \binom{n}{k} p^k\left(1-p\right)^{n-k} \hspace{1cm} (Ec. 1)
 \end{equation}
 
-## Apuestas con distribución binomial
+## Apuesta <span style="color:red;">rojo</span>/negro como distribución binomial
 Para una apuesta de dinero par (como <span style="color:red;">**rojo**</span>/**negro**), el éxito se define como ganar la apuesta, y el fracaso como perderla. Veamos cómo se aplica la distribución binomial:
 
 1. **Número de ensayos (n):** El número de giros de la ruleta o jugadas que se realizan. 
@@ -107,32 +106,137 @@ $$
   
 3. **Número de éxitos (X):** El número de veces que se gana la apuesta. Esto es lo que nos interesa modelar y contar.
 
+![](Test_files/figure-html/distro_Binomial-1.png)<!-- -->
+
 ## Valor Esperado de una apuesta
   El objetivo principal al jugar a la ruleta es aprovechar el azar para obtener ganancias, lo que en teoría, puede parecer una manera "factible" de ganar dinero. Sin embargo, antes de jugar, es fundamental analizar realmente, cuán rentable es una apuesta desde el punto de vista estadístico. Para esto, se calcula la **ganancia esperada**, una medida que nos indica, en promedio, cuánto dinero podemos ganar o perder por cada apuesta realizada.
 
-El concepto de **valor esperado** se aplica a una variable aleatoria, en este caso, la ganancia obtenida en una apuesta. Para ilustrarlo, consideremos un ejemplo sencillo: realizar apuesta al <span style="color:red;">**rojo**</span>/**negro** en la ruleta americana.
-
-El valor esperado \( E(X) \) se calcula como:
+El valor esperado, denotado como \( E(X) \), para una distribución binomial se calcula mediante la fórmula:
 
 \[
-E(X) = (1) \cdot P(\text{ganar}) + (-1) \cdot P(\text{perder})
+E(X) = n \cdot p
 \]
 
-Donde:
-<center>
-
-\( P(\text{ganar}) = \frac{18}{38} \): probabilidad de ganar.
-
-\( P(\text{perder}) = \frac{20}{38} \): probabilidad de perder.
-
-</center>
-Sustituyendo los valores:
+En este caso, para una sola tirada (\( n = 1 \)) donde la probabilidad de ganar (\( p \)) es \( \frac{18}{37} \), el cálculo del valor esperado es:
 
 \[
-E(X) = \frac{18}{38} - \frac{20}{38} = -\frac{2}{38} = -0.0526
+E[X] = 1 \cdot \frac{18}{37} \approx 48.6\%
 \]
 
-En promedio, el jugador pierde aproximadamente 0.0526 unidades por cada apuesta, es decir, el 5.26% de la cantidad apostada. Resultado que refleja la ventaja estadística que posee el casino.
+Esto significa que, en promedio, si jugamos una vez, ganaremos aproximadamente el 48.6% de las veces.
+
+### Ganancia esperada
+
+Con esta información, podemos calcular la **ganancia esperada** utilizando la fórmula:
+
+\[
+E[G] = E[B] - E[P]
+\]
+
+Donde:  
+- \( E[B] \): Beneficio esperado.  
+- \( E[P] \): Pérdida esperada.  
+
+El beneficio esperado está dado por:  
+
+\[
+E[B] = E[X] \cdot Premio \cdot A
+\]
+
+La pérdida esperada se calcula como:  
+
+\[
+E[P] = (1 - E[X]) \cdot A
+\]
+
+Por lo tanto, la ganancia esperada para una apuesta Rojo/Negro se expresa como:  
+
+\[
+E[G] = E[X] \cdot Premio \cdot A - (1 - E[X]) \cdot A
+\]
+
+Sustituyendo \( E[X] = \frac{18}{37} \), obtenemos:  
+
+\[
+E[G] = \frac{18}{37} \cdot Premio \cdot A - \frac{19}{37} \cdot A
+\]
+
+\[
+E[G] = -\frac{1}{37} \cdot A \approx -2.7\% \cdot A
+\]
+
+En promedio, el jugador pierde aproximadamente el 2.7% de cada unidad apostada, este resultado refleja la ventaja estadística que posee el casino.
+
+### Independencia de las tiradas
+
+Es importante destacar que es una falacia pensar que al jugar más veces seguidas aumentan las probabilidades de obtener el resultado deseado. Cada tirada de la ruleta es independiente, lo que significa que el resultado de una no afecta al de las siguientes.
+
+### ¿Qué ocurre si jugamos 37 veces?
+
+¿Podríamos recuperar nuestras pérdidas o incluso ganar dinero? Analicemos:  
+
+\[
+E[37] = E[X] \cdot Premio \cdot A \cdot 37 - (1 - E[X]) \cdot A \cdot 37
+\]
+
+Sustituyendo \( E[X] = \frac{18}{37} \):  
+
+\[
+E[37] = 37 \cdot \frac{18}{37} \cdot Premio \cdot A - 37 \cdot (1 - \frac{18}{37}) \cdot A
+\]
+
+Simplificando:  
+
+\[
+E[37] = -1 \cdot A = -100\% \cdot A
+\]
+
+Es decir, después de 37 jugadas, en promedio, perderemos el **100%** de lo apostado. Por ejemplo, si apostamos $10,000$ pesos en cada jugada, al cabo de 37 tiradas habremos perdido en promedio **$10,000$ pesos**.
+
+## Ganancias esperadas para las diferentes apuestas 
+
+Esta lógica puede aplicarse a cualquier apuesta del casino. Para analizar cómo varían los valores de las apuestas, se realizó una simulación en R para calcular el **valor esperado** y la **ganancia esperada** por tirada.
+
+```
+##           tipo prob_ganar pago valor_esperado ganancia_esperada
+## 1   Rojo/Negro 0.48648649    1    -0.02702702       -0.02702702
+## 2    Par/Impar 0.48648649    1    -0.02702702       -0.02702702
+## 3    Alto/Bajo 0.48648649    1    -0.02702702       -0.02702702
+## 4      Docenas 0.32432432    2    -0.02702704       -0.02702704
+## 5     Columnas 0.32432432    2    -0.02702704       -0.02702704
+## 6        Pleno 0.02702703   35    -0.02702692       -0.02702692
+## 7      Caballo 0.05405405   17    -0.02702710       -0.02702710
+## 8  Transversal 0.08108108   11    -0.02702704       -0.02702704
+## 9      Esquina 0.10810811    8    -0.02702701       -0.02702701
+## 10       Línea 0.16216216    5    -0.02702704       -0.02702704
+```
+
+```
+## Warning: package 'ggplot2' was built under R version 4.4.2
+```
+
+![](Test_files/figure-html/unnamed-chunk-1-1.png)<!-- -->
+
+
+
+Podemos simular las ganancias esperadas en la ruleta americana, siguiendo la distribución binomial y acomodando los porcentajes (1/38) para cada número tenemos
+
+
+```
+##           tipo prob_ganar pago valor_esperado ganancia_esperada
+## 1   Rojo/Negro 0.47368421    1    -0.05263158       -0.05263158
+## 2    Par/Impar 0.47368421    1    -0.05263158       -0.05263158
+## 3    Alto/Bajo 0.47368421    1    -0.05263158       -0.05263158
+## 4      Docenas 0.31578947    2    -0.05263159       -0.05263159
+## 5     Columnas 0.31578947    2    -0.05263159       -0.05263159
+## 6        Pleno 0.02631579   35    -0.05263156       -0.05263156
+## 7      Caballo 0.05263158   17    -0.05263156       -0.05263156
+## 8  Transversal 0.07894737   11    -0.05263156       -0.05263156
+## 9      Esquina 0.10526316    8    -0.05263156       -0.05263156
+## 10       Línea 0.15789474    5    -0.05263156       -0.05263156
+```
+
+![](Test_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
 
 ## Estrategia
 Si bien en los juegos de azar, como su nombre lo indica, la aleatoriedad es un factor fundamental en su desarrollo, no existen certezas absolutas. Predecir a ciencia cierta lo que va a suceder es prácticamente imposible, pues entre más específico sea el evento a predecir, más complicado resultará hacerlo. Un ejemplo de esto es la ruleta: realizar una predicción del número exacto en el que caerá la bola es una hazaña mucho más díficil que predecir un rango de números donde es más probable que caiga. 
@@ -151,6 +255,51 @@ La configuración consiste en colocar dos fichas(pueden ser cualquier valor, per
 <center>![Tablero de Ruleta con las Probabilidades Descritas](Images\tableroRuleta.png){width=400 height=250}
 
 _**Fuente**: [@imagen4]_</center>
+
+### Ganancia esperada de la estrategia 
+
+Los datos que usaremos para calcular la ganancia esperado son los siguientes:
+
+- **Total apostado**: \( 200 + 200 + 100 = 500 \).
+- **Pago por docena**: \( 2:1 \).
+- **Probabilidades**:
+- Probabilidad de ganar en la docena 1-12: \( \frac{12}{37} \).
+- Probabilidad de ganar en la docena 13-24: \( \frac{12}{37} \).
+- Probabilidad de ganar en la docena 25-36: \( \frac{12}{37} \).
+- Probabilidad de perder (ninguna de las docenas ganadoras): \( \frac{1}{37} \).
+
+Vamos a calcular cuánto es la ganancia para cada caso:
+
+- **Si se gana en la docena 1-12**: 
+  - Ganancia = \( 200 \times 2 = 400 \).
+  - Se pierden las apuestas en las docenas 13-24 (100) y 25-36 (200).
+  - Ganancia neta = \( 400 - 100 - 200 = 100 \).
+  
+- **Si se gana en la docena 13-24**:
+  - Ganancia = \( 100 \times 2 = 200 \).
+  - Se pierden las apuestas en las docenas 1-12 (200) y 25-36 (200).
+  - Ganancia neta = \( 200 - 200 - 200 = -200 \).
+  
+- **Si se gana en la docena 25-36**:
+  - Ganancia = \( 200 \times 2 = 400 \).
+  - Se pierden las apuestas en las docenas 1-12 (200) y 13-24 (100).
+  - Ganancia neta = \( 400 - 200 - 100 = 100 \).
+
+- **Si se pierde (0)**:
+  - Ganancia neta = \( -500 \) 
+
+
+
+Se calcula la **ganancia esperada E[X]** como el promedio ponderado de las ganancias, tomando en cuenta las probabilidades de cada escenario. La fórmula es:
+
+\[
+E[G] = \left(\frac{12}{37} \cdot 100 \right) + \left(\frac{12}{37} \cdot (-200) \right) + \left(\frac{12}{37} \cdot 100 \right) + \left(\frac{1}{37} \cdot (-500) \right)
+\]
+
+Obtenemos que el valor esperado al realizar esta apuesta, resulta negativo
+\[
+E[G] = \frac{-500}{37}
+\]
 
 ### Simulación en R
 En esta sección, se describe el proceso de simulación en R, para la estrategia abordada anteriormente.
@@ -205,7 +354,7 @@ print(simulacion)
 
 ```
 ## $resultado
-## [1] 32
+## [1] 30
 ## 
 ## $ganancias_net
 ## [1] 100
@@ -253,12 +402,12 @@ head(rondas_infinito)
 
 ```
 ##   resultado ganancias_net contador
-## 1         2           100        1
-## 2        15          -200        2
-## 3        20          -200        3
-## 4        35           100        4
-## 5        29           100        5
-## 6         7           100        6
+## 1        36           100        1
+## 2        18          -200        2
+## 3        24          -200        3
+## 4        31           100        4
+## 5        25           100        5
+## 6        10           100        6
 ```
 
 ``` r
@@ -272,6 +421,7 @@ ggplot(rondas_infinito, aes(x = contador, y = GananciasAcumuladas)) +
 ```
 
 ![](Test_files/figure-html/EvolucionGananciasInfinito-1.png)<!-- -->
+
 Como ya nos lo advertía el 'Valor Esperado' las ganancias a la larga solo tienden a ir en picada, pues recordemos que este era negativo (-0.0526); Se pierde más de lo que se gana cuando el número de rondas tiende al infinito. Esta es la forma que tiene el casino para generar su tan alta rentabilidad; Y en algunos casos se puede llegar a perder dinero pese a que el número de victorias sea mayor. Ejemplificando esto:
 
 
@@ -287,6 +437,7 @@ ggplot(rondas_infinito, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
 ```
 
 ![](Test_files/figure-html/Proporción_victorias_derrotas-1.png)<!-- -->
+
 Pero vayamos a un ámbito real, nadie va a hacer 10k juegos en un día, tomemos una persona promedio que disfruta de la emoción que le puedan brindar las apuestas responsablemente, simulemos 10 juegos haciendo uso de la estrategia.
 
 
@@ -297,12 +448,12 @@ head(rondas_reales)
 
 ```
 ##   resultado ganancias_net contador
-## 1        33           100        1
-## 2         5           100        2
-## 3        24          -200        3
-## 4        25           100        4
-## 5         1           100        5
-## 6        10           100        6
+## 1        30           100        1
+## 2         7           100        2
+## 3        14          -200        3
+## 4        35           100        4
+## 5        21          -200        5
+## 6        17          -200        6
 ```
 
 ``` r
@@ -365,12 +516,12 @@ head(rondas_diez)
 
 ```
 ##   resultado ganancias_net contador
-## 1      18.2           100        1
-## 2      20.4          -200        2
-## 3      14.6           700        3
-## 4      20.8          -500        4
-## 5      18.7          -200        5
-## 6      15.4          -500        6
+## 1      16.9          -500        1
+## 2      21.0          -500        2
+## 3      18.4          -800        3
+## 4      12.4          -500        4
+## 5      15.6          -800        5
+## 6      19.6          -500        6
 ```
 
 ``` r
@@ -403,25 +554,26 @@ Notamos que vuelven a haber perdida, ¿no se suponía que la estrategia servía 
 
 ```
 ##   resultado ganancias_net contador
-## 1      20.7           400        1
-## 2      20.3          -200        2
-## 3      18.7           400        3
-## 4      21.0           400        4
-## 5      18.0         -1400        5
-## 6      17.2           100        6
+## 1      17.5          -800        1
+## 2      20.6         -1100        2
+## 3      20.2           100        3
+## 4      22.4           400        4
+## 5      13.1          -200        5
+## 6      18.5          -500        6
 ```
 
 ![](Test_files/figure-html/PromedioDiezJuegos2-1.png)<!-- -->![](Test_files/figure-html/PromedioDiezJuegos2-2.png)<!-- -->
 
 
+
 ```
 ##   resultado ganancias_net contador
-## 1      23.6           700        1
-## 2      18.9          -500        2
-## 3      12.3          -500        3
-## 4      18.9           100        4
-## 5      20.9           400        5
-## 6      17.6           400        6
+## 1      17.7           100        1
+## 2      14.7           400        2
+## 3      13.7          -500        3
+## 4      17.5          -800        4
+## 5      18.2           400        5
+## 6      20.8           100        6
 ```
 
 ![](Test_files/figure-html/PromedioDiezJuegos3-1.png)<!-- -->![](Test_files/figure-html/PromedioDiezJuegos3-2.png)<!-- -->
@@ -446,7 +598,5 @@ En última instancia, la clave para disfrutar de este tipo de actividades radica
 
 
 # Referencias
-
-
 
 
