@@ -3,7 +3,7 @@ title: "Análisis Estadístico de la Ruleta: ¿Que formas 'seguras' hay de ganar
 author: "Carlos Mateo vera |
 Juan José Calderon |
 Julian Prada"
-date: "`r Sys.Date()`"
+date: "2024-12-07"
 output: 
   html_document: 
     theme: yeti                # Opciones: default, journal, yeti, cerulean, darkly
@@ -78,23 +78,7 @@ Esta ventaja se puede calcular porcentualmente como:
 
 La ruleta puede modelarse como una distribución binomial en ciertos tipos de apuestas, especialmente en aquellas donde el resultado de cada jugada es un evento con dos resultados posibles: ganar o perder. Esto se puede observar en las apuestas de dinero par, como <span style="color:red;">**rojo**</span>/**negro**, Par/Impar, y 1-18/19-36. Estas apuestas tienen solo dos resultados posibles (ganar o perder), lo que las hace aptas para modelarse con la distribución binomial.
 
-```{r distro_Binomial,echo=FALSE}
-# Parámetros de la distribución binomial
-n <- 100    # Número de ensayos
-p <- 0.5   # Probabilidad de éxito
-
-# Valores posibles (0, 1, ..., n)
-x <- 0:n
-
-# Probabilidades asociadas
-prob <- dbinom(x, size = n, prob = p)
-
-# Crear el gráfico
-plot(x, prob, type = "h", lwd = 4, col = "blue",
-     main = expression(italic("Ejemplo de Distribución Binomial (n = 100, p = 0.5)")),
-     xlab = "Número de éxitos", ylab = "Probabilidad")
-points(x, prob, pch = 16, col = "red")
-```
+![](Test_files/figure-html/distro_Binomial-1.png)<!-- -->
 
 ### Concepto de distribución Binomial
 La distribución binomial describe el número de éxitos (eventos favorables) en una secuencia de ensayos independientes, cuando la probabilidad de éxito en cada ensayo es constante. En términos matemáticos, se define como:
@@ -172,7 +156,8 @@ _**Fuente**: [@imagen4]_</center>
 En esta sección, se describe el proceso de simulación en R, para la estrategia abordada anteriormente.
 
 
-```{r Simular_estrategia}
+
+``` r
 docenas <- data.frame(
   Docena1 = 1:12,       
   Docena2 = 13:24,      
@@ -216,11 +201,19 @@ simular_estrategia <- function() {
 
 simulacion <- simular_estrategia()
 print(simulacion)
+```
 
+```
+## $resultado
+## [1] 32
+## 
+## $ganancias_net
+## [1] 100
 ```
 
 
-```{r simulacion_rondas}
+
+``` r
 simular_varios <- function(n) {
   
   juegos <- data.frame(
@@ -244,19 +237,31 @@ simular_varios <- function(n) {
   
   return(juegos)  
 }
-
 ```
 
 #Resultados
 
 Ahora observemos como se comporta esta estrategia a la larga, ¿a dónde tiende?
 
-```{r EvolucionGananciasInfinito, echo=TRUE, fig.width=8, fig.height=4}
+
+``` r
 library(ggplot2)
 
 rondas_infinito <- simular_varios(10000)
 head(rondas_infinito)
+```
 
+```
+##   resultado ganancias_net contador
+## 1         2           100        1
+## 2        15          -200        2
+## 3        20          -200        3
+## 4        35           100        4
+## 5        29           100        5
+## 6         7           100        6
+```
+
+``` r
 rondas_infinito$GananciasAcumuladas <- cumsum(rondas_infinito$ganancias_net)
 
 ggplot(rondas_infinito, aes(x = contador, y = GananciasAcumuladas)) +
@@ -265,9 +270,12 @@ ggplot(rondas_infinito, aes(x = contador, y = GananciasAcumuladas)) +
        x = "Número de Rondas",
        y = "Ganancia Acumulada")
 ```
+
+![](Test_files/figure-html/EvolucionGananciasInfinito-1.png)<!-- -->
 Como ya nos lo advertía el 'Valor Esperado' las ganancias a la larga solo tienden a ir en picada, pues recordemos que este era negativo (-0.0526); Se pierde más de lo que se gana cuando el número de rondas tiende al infinito. Esta es la forma que tiene el casino para generar su tan alta rentabilidad; Y en algunos casos se puede llegar a perder dinero pese a que el número de victorias sea mayor. Ejemplificando esto:
 
-```{r Proporción_victorias_derrotas, echo=TRUE, fig.width=8, fig.height=4}
+
+``` r
 rondas_infinito$ResultadoFinal <- ifelse(rondas_infinito$ganancias_net > 0, "Victoria", "Derrota")
 
 ggplot(rondas_infinito, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
@@ -276,15 +284,28 @@ ggplot(rondas_infinito, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
   labs(title = "Proporción de Victorias y Derrotas",
        x = "Resultado",
        y = "Número de Rondas")
-
-
 ```
+
+![](Test_files/figure-html/Proporción_victorias_derrotas-1.png)<!-- -->
 Pero vayamos a un ámbito real, nadie va a hacer 10k juegos en un día, tomemos una persona promedio que disfruta de la emoción que le puedan brindar las apuestas responsablemente, simulemos 10 juegos haciendo uso de la estrategia.
 
-```{r EvolucionGananciasReal, echo=TRUE, fig.width=8, fig.height=4}
+
+``` r
 rondas_reales <- simular_varios(10)
 head(rondas_reales)
+```
 
+```
+##   resultado ganancias_net contador
+## 1        33           100        1
+## 2         5           100        2
+## 3        24          -200        3
+## 4        25           100        4
+## 5         1           100        5
+## 6        10           100        6
+```
+
+``` r
 rondas_reales$GananciasAcumuladas <- cumsum(rondas_reales$ganancias_net)
 
 ggplot(rondas_reales, aes(x = contador, y = GananciasAcumuladas)) +
@@ -292,7 +313,11 @@ ggplot(rondas_reales, aes(x = contador, y = GananciasAcumuladas)) +
   labs(title = "Evolución de las Ganancias Acumuladas",
        x = "Número de Rondas",
        y = "Ganancia Acumulada")
+```
 
+![](Test_files/figure-html/EvolucionGananciasReal-1.png)<!-- -->
+
+``` r
 rondas_reales$ResultadoFinal <- ifelse(rondas_reales$ganancias_net > 0, "Victoria", "Derrota")
 
 ggplot(rondas_reales, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
@@ -301,14 +326,15 @@ ggplot(rondas_reales, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
   labs(title = "Proporción de Victorias y Derrotas",
        x = "Resultado",
        y = "Número de Rondas")
-
 ```
+
+![](Test_files/figure-html/EvolucionGananciasReal-2.png)<!-- -->
 
 Y observamos cosas interesantes, con un poco de suerte podemos obtener ganancias netas considerables, pero; ¿Habrá sido suerte?
 Consideremos ahora un promedio de 10 veces 10 rondas; Es decir, imagina que vas 10 días seguidos al casino y haces 10 juegos usando la estrategia, a ver qué resultados podemos obtener
 
-```{r PromedioDiezJuegos1, echo=TRUE, fig.width=8, fig.height=4}
 
+``` r
 simular_Diez_Rondas <- function(n) {
   
   rondas_diez <- data.frame(
@@ -335,7 +361,19 @@ simular_Diez_Rondas <- function(n) {
 
 rondas_diez <-simular_Diez_Rondas(10)
 head(rondas_diez)
+```
 
+```
+##   resultado ganancias_net contador
+## 1      18.2           100        1
+## 2      20.4          -200        2
+## 3      14.6           700        3
+## 4      20.8          -500        4
+## 5      18.7          -200        5
+## 6      15.4          -500        6
+```
+
+``` r
 rondas_diez$GananciasAcumuladas <- cumsum(rondas_diez$ganancias_net)
 
 ggplot(rondas_diez, aes(x = contador, y = GananciasAcumuladas)) +
@@ -343,7 +381,11 @@ ggplot(rondas_diez, aes(x = contador, y = GananciasAcumuladas)) +
   labs(title = "Evolución de las Ganancias Acumuladas",
        x = "Número de Rondas",
        y = "Ganancia Acumulada")
+```
 
+![](Test_files/figure-html/PromedioDiezJuegos1-1.png)<!-- -->
+
+``` r
 rondas_diez$ResultadoFinal <- ifelse(rondas_diez$ganancias_net > 0, "Victoria", "Derrota")
 
 ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
@@ -352,106 +394,37 @@ ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
   labs(title = "Proporción de Victorias y Derrotas",
        x = "Resultado",
        y = "Número de Rondas")
-
 ```
+
+![](Test_files/figure-html/PromedioDiezJuegos1-2.png)<!-- -->
 
 Notamos que vuelven a haber perdida, ¿no se suponía que la estrategia servía para ganar fácil? probemos dos veces más
 
-```{r PromedioDiezJuegos2, echo=FALSE, fig.width=8, fig.height=4}
-
-simular_Diez_Rondas <- function(n) {
-  
-  rondas_diez <- data.frame(
-    resultado = numeric(0), 
-    ganancias_net = numeric(0),
-    contador = numeric(0)
-  )
-  
-  for (i in 1:n) {
-    simulacion <- simular_varios(10)
-    
-    resultado_promedio <- mean(simulacion$resultado)
-    ganancias_net <- sum(simulacion$ganancias_net) 
-    
-    rondas_diez <- rbind(rondas_diez,
-                         data.frame(resultado = resultado_promedio, 
-                                    ganancias_net = ganancias_net,
-                                    contador = i))
-  }
-  
-  return(rondas_diez)
-}
-
-
-rondas_diez <-simular_Diez_Rondas(10)
-head(rondas_diez)
-
-rondas_diez$GananciasAcumuladas <- cumsum(rondas_diez$ganancias_net)
-
-ggplot(rondas_diez, aes(x = contador, y = GananciasAcumuladas)) +
-  geom_line(color = "green") +
-  labs(title = "Evolución de las Ganancias Acumuladas",
-       x = "Número de Rondas",
-       y = "Ganancia Acumulada")
-
-rondas_diez$ResultadoFinal <- ifelse(rondas_diez$ganancias_net > 0, "Victoria", "Derrota")
-
-ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
-  geom_bar() +
-  scale_fill_manual(values = c("Victoria" = "green", "Derrota" = "red")) +
-  labs(title = "Proporción de Victorias y Derrotas",
-       x = "Resultado",
-       y = "Número de Rondas")
 
 ```
+##   resultado ganancias_net contador
+## 1      20.7           400        1
+## 2      20.3          -200        2
+## 3      18.7           400        3
+## 4      21.0           400        4
+## 5      18.0         -1400        5
+## 6      17.2           100        6
+```
 
-```{r PromedioDiezJuegos3, echo=FALSE, fig.width=8, fig.height=4}
+![](Test_files/figure-html/PromedioDiezJuegos2-1.png)<!-- -->![](Test_files/figure-html/PromedioDiezJuegos2-2.png)<!-- -->
 
-simular_Diez_Rondas <- function(n) {
-  
-  rondas_diez <- data.frame(
-    resultado = numeric(0), 
-    ganancias_net = numeric(0),
-    contador = numeric(0)
-  )
-  
-  for (i in 1:n) {
-    simulacion <- simular_varios(10)
-    
-    resultado_promedio <- mean(simulacion$resultado)
-    ganancias_net <- sum(simulacion$ganancias_net) 
-    
-    rondas_diez <- rbind(rondas_diez,
-                         data.frame(resultado = resultado_promedio, 
-                                    ganancias_net = ganancias_net,
-                                    contador = i))
-  }
-  
-  return(rondas_diez)
-}
-
-
-rondas_diez <-simular_Diez_Rondas(10)
-head(rondas_diez)
-
-rondas_diez$GananciasAcumuladas <- cumsum(rondas_diez$ganancias_net)
-
-ggplot(rondas_diez, aes(x = contador, y = GananciasAcumuladas)) +
-  geom_line(color = "green") +
-  labs(title = "Evolución de las Ganancias Acumuladas",
-       x = "Número de Rondas",
-       y = "Ganancia Acumulada")
-
-rondas_diez$ResultadoFinal <- ifelse(rondas_diez$ganancias_net > 0, "Victoria", "Derrota")
-
-ggplot(rondas_diez, aes(x = ResultadoFinal, fill = ResultadoFinal)) +
-  geom_bar() +
-  scale_fill_manual(values = c("Victoria" = "green", "Derrota" = "red")) +
-  labs(title = "Proporción de Victorias y Derrotas",
-       x = "Resultado",
-       y = "Número de Rondas")
 
 ```
+##   resultado ganancias_net contador
+## 1      23.6           700        1
+## 2      18.9          -500        2
+## 3      12.3          -500        3
+## 4      18.9           100        4
+## 5      20.9           400        5
+## 6      17.6           400        6
+```
+
+![](Test_files/figure-html/PromedioDiezJuegos3-1.png)<!-- -->![](Test_files/figure-html/PromedioDiezJuegos3-2.png)<!-- -->
 
 # Discusión
 
